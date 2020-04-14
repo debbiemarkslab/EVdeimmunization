@@ -221,19 +221,26 @@ def main():
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        description="Generate specification files necessary to run EVdeimmunization"
-    )
+    parser = argparse.ArgumentParser(prog='deimm preprocess',
+                             usage='%(prog)s [options] alignment model config out_basename')
 
-    parser.add_argument("alignment", help="alignment in fasta format that served as input to EVcouplings")
-    parser.add_argument("model", help="binary eij couplings file with the biotherapeutic sequence as target")
-    parser.add_argument("config", help="config file in YAML format")
-    parser.add_argument("out_basename", help="basename of out file (multiple files will be created "
+    parser.add_argument("alignment", 
+                        help="alignment in fasta format that served as input to EVcouplings")
+    parser.add_argument("model", 
+                        help="binary eij couplings file with the biotherapeutic sequence as target")
+    parser.add_argument("config", 
+                        help="config file in YAML format")
+    parser.add_argument("out_basename", 
+                        help="basename of out file (multiple files will be created "
                                              "with appropriate extensions added)")
 
-    parser.add_argument("--freq_thresh", "-t", type=float, default=0.0,
+    parser.add_argument("--freq_thresh", "-t", 
+                        type=float, 
+                        default=0.0,
                         help="amino acid frequency threshold used to determine allowed mutations")
-    parser.add_argument("--ev_file_format", "-f", choices=["plmc_v1", "plmc_v2"], default="plmc_v2",
+    parser.add_argument("--ev_file_format", "-f", 
+                        choices=["plmc_v1", "plmc_v2"], 
+                        default="plmc_v2",
                         help="file format of EVcouplings model file (default: 'plmc_v2')")
 
     return parser.parse_args()

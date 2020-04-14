@@ -1,0 +1,21 @@
+#!/bin/bash
+
+EVDEIMM_ROOT_DIR=$(realpath $(dirname $0))
+
+if [ "$1" == "preprocess" ]; then
+
+    python ${EVDEIMM_ROOT_DIR}/src/construct_model_file.py ${@:2}
+
+elif [ "$1" == "solve" ]; then
+
+    python ${EVDEIMM_ROOT_DIR}/src/deimm.py ${@:2}
+
+else
+    echo "Usage: evdeimm <command> [options]"
+    echo
+    echo "    preprocess     constructs model file"
+    echo "    solve          deimmunizes model"
+    echo 
+    echo "Note: run any command with --help to view required fields, options"
+    echo
+fi

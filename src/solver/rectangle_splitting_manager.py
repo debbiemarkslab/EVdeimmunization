@@ -10,8 +10,11 @@ import socket
 import multiprocessing as mp
 import itertools as itr
 from multiprocessing.managers import SyncManager
-from ./utility import HyperVolume
-from ./utility import ParetoFilter
+
+import sys
+sys.path.insert(1, './utility')
+from utility import HyperVolume
+from utility import ParetoFilter
 
 
 
