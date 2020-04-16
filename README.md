@@ -2,7 +2,7 @@
 
 
 ## Introduction:
-This software de-immunizes therapeutic sequences by solving the dual optimization problem of reducing immunogenicity and preserving protein function using model output from Evolutionary Couplings.
+This software de-immunizes therapeutic sequences by solving the dual optimization problem of reducing immunogenicity and increasing the likelihood of protein function using model output from [EVcouplings](https://github.com/debbiemarkslab/EVcouplings). 
 
 ## Requirement:
 1. Python 2.7
@@ -59,9 +59,8 @@ parameters:
     # number of mutations to introduce
     k: 2
 ```
-The example allele file includes representative alleles of supertypes [1]. Along with each allele is a PSSM threshold value to select peptides in the top 1% of binders and a frequency parameter. 
+The example allele file includes representative alleles of supertypes [1]. Along with each allele is a PSSM correction value that adjusts PSSM scores such that  peptides in the top 1% of binders have a positive score as computed in [MixMHCpred2.0](https://github.com/GfellerLab/MixMHCpred) [2] and a frequency parameter. 
 
-TODO: Describe how PSSM threshold value is calculated
 ```
 A0101,0.086238,1.0
 A0201,0.059324,1.0
@@ -77,7 +76,7 @@ B1501,0.102201,1.0
 ```
 
 ### Solve:
-This module takes the model files from the preprocessing step and solves the bi-objective mixed integer problem using a rectangle splitting approach [2].
+This module takes the model files from the preprocessing step and solves the bi-objective mixed integer problem using a rectangle splitting approach [3].
 ```
 usage: deimm solve  [options] --port PORT  --output OUTPUT model_imm.pl model_en.pl
 
@@ -102,9 +101,7 @@ optional arguments:
 ```
 
 ## Examples:
-TODO: Find fast example
 ### Test solver installation:
-
 ```
 deimm solve ./test/test_imm.lp ./test/test_en.lp -p 6882 -o ./test/out.pcl -v 1
 ```
@@ -119,15 +116,13 @@ deimm preprocess ./example/PvLEA4_repeats_b0.75.fasta \
 ```
 Next, solve:
 ```
-deimm solve ./example/PvLEA4_repeats_b0.75.k2_imm.pl ./example/PvLEA4_repeats_b0.75.k2_en.pl \
+deimm solve ./example/PvLEA4_repeats_b0.75.k2_imm.lp ./example/PvLEA4_repeats_b0.75.k2_en.lp \
             -o ./example/PvLEA4_repeats_b0.75.k2.pcl \ 
             -p 6882 \
             -v 1
 ```
 
 ## Advanced Usage:
-TODO: Add link to FRED2 EVDeimmunization
-
 The solver can be used in distributed systems. For that, first start the manager script, which implements the algorithm and handles the work distribution.
 Make sure that the chosen IP and Port combination is reachable from all other used systems.
 ```
@@ -186,13 +181,16 @@ python deimmunization_worker.py -i ./example/FA8_HUMAN_hmmer_plm_n5_m50_f70_t01_
 
 ## References
 
-Please cite the following reference for the EVDeimmunization software:
+Please cite the following reference for the EVdeimmunization software:
 
 Schubert B, Schärfe C, Dönnes P, Hopf T, Marks D, Kohlbacher O. Population-specific design of de-immunized protein biotherapeutics. PLoS Comput Biol. 2018;14(3):e1005983. Published 2018 Mar 2. doi:10.1371/journal.pcbi.1005983
 
+The first version of the EVdeimmunization software package was initially released with this publication at [FRED-2 EVdeimmunization](https://github.com/FRED-2/EVdeimmunization).
 
 Other sources:
 
 [1] Lund O, Nielsen M, Kesmir C, et al. Definition of supertypes for HLA molecules using clustering of specificity matrices. Immunogenetics. 2004;55(12):797–810. doi:10.1007/s00251-004-0647-4
 
-[2] Boland, N, Charkhgard, H, and Savelsbergh, M. A criterion space search algorithm for biobjective integer programming: The balanced box method. INFORMS J. Comput. 2015; 27, 735–754.
+[2] Gfeller, D, Guillaume, P, Michaux, J, Pak, H-S, Daniel, R T, Racle, J, Coukos, G, and Bassani-Sternberg, M. The Length Distribution and Multiple Specificity of Naturally Presented HLA-I Ligands. J. Immunol. 2018;201:3705–3716.
+
+[3] Boland, N, Charkhgard, H, and Savelsbergh, M. A criterion space search algorithm for biobjective integer programming: The balanced box method. INFORMS J. Comput. 2015; 27, 735–754.
