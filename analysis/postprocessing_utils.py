@@ -127,7 +127,7 @@ def load_pwms(alleles, library_path, epi_len=9):
 
 
 
-def calc_wildtype_point(wt, pwms, alleles, ev_couplings, start_pos=75):
+def calc_wildtype_point(wt, pwms, alleles, ev_couplings, start_pos=0):
     """Calculate immunogenicity and energy of the wildtype.
  
     Parameters
